@@ -1,0 +1,49 @@
+/*
+Name:Sanchez Ochieng
+Registration number:CT101/G/26450/25
+Description:Borrowed books
+*/
+
+
+#include <stdio.h>
+#include <string.h>
+
+int main(void) {
+    const char *filename = "borrowed_books.txt";
+    FILE *fp = fopen(filename, "a"); /* append mode: doesn't delete existing records */
+    if (!fp) {
+        perror("Unable to open file");
+        return 1;
+    }
+
+    char title[256];
+    printf("Enter book titles (empty line to finish):\n");
+    while (1) {
+        printf("> ");
+        if (!fgets(title, sizeof(title), stdin)) break; /* EOF */
+        
+        size_t len = strlen(title);
+        if (len > 0 && title[len-1] == '\n') title[len-1] = '\0';
+
+        
+        if (title[0] == '\0') break;
+
+        
+        if (fprintf(fp, "%s\n", title) < 0) {
+            perror("Write error");
+            fclose(fp);
+            return 1;
+        }
+
+        fflush(fp); /* ensure it's written */
+        printf("Title stored successfully: \"%s\"\n", title); /* confirmation message */
+    }
+
+    if (fclose(fp) != 0) {
+        perror("Error closing file");
+        return 1;
+    }
+
+    printf("Done. File closed.\n");
+    return 0;
+}
