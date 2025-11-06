@@ -1,0 +1,50 @@
+/*
+Name:Sanchez Ochieng
+Registration number:CT101/G/26450/25
+Description:total sales 
+
+*/
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    FILE *fp;
+    float transaction_amount;
+    float total_sales = 0.0;
+    const char *filename = "sales.txt";
+
+    fp = fopen(filename, "w");
+    if (fp == NULL) {
+        perror("Error creating sales.txt");
+        return 1;
+    }
+    fprintf(fp, "150.75\n");
+    fprintf(fp, "45.00\n");
+    fprintf(fp, "225.50\n");
+    fprintf(fp, "150.00\n");
+    fclose(fp);
+    printf("Sample sales data created in %s\n", filename);
+    
+
+
+    fp = fopen(filename, "r"); 
+    
+    if (fp == NULL) {
+        perror("Error opening sales file for reading");
+        return 1; 
+    }
+
+    while (fscanf(fp, "%f", &transaction_amount) == 1) {
+        
+        total_sales += transaction_amount;
+    }
+
+    printf("\n Daily Sales Report \n");
+    printf("Total transactions successfully read.\n");
+    printf("The total sales for the day is: $%.2f\n", total_sales);
+    
+    fclose(fp);
+    printf("File %s properly closed.\n", filename);
+
+    return 0;
+}
